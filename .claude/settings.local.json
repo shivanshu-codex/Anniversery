@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(cd \"c:\\\\Users\\\\workS\\\\OneDrive\\\\Desktop\\\\Annniversery\"; npm create vite@latest . -- --template react-ts --yes 2>&1; Write-Host \"Exit: $LASTEXITCODE\")",
+      "PowerShell(cd \"c:\\\\Users\\\\workS\\\\OneDrive\\\\Desktop\\\\Annniversery\"; npx create-vite@latest . --template react-ts 2>&1; Write-Host \"Done: $LASTEXITCODE\")",
+      "PowerShell(Start-Process \"http://localhost:5173\")",
+      "PowerShell(winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements 2>&1)",
+      "PowerShell($git = Get-ChildItem \"C:\\\\Users\\\\workS\\\\AppData\\\\Local\\\\GitHubDesktop\" -Recurse -Filter \"git.exe\" -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName; Write-Host \"Git found at: $git\")"
+    ]
+  }
+}
