@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { CONTENT } from '../content'
@@ -54,7 +54,6 @@ export default function Gallery({ photos = CONTENT.photos, onDone }: GalleryProp
   const [showMsg, setShowMsg] = useState(false)
   const [celebrating, setCelebrating] = useState(false)
   const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({})
-  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const photo = photos[current]
   const imgFailed = imgErrors[current]
@@ -362,8 +361,6 @@ export default function Gallery({ photos = CONTENT.photos, onDone }: GalleryProp
         </motion.button>
       </div>
 
-      {/* Audio element - wired automatically if public/song.mp3 exists */}
-      <audio ref={audioRef} src="/song.mp3" loop preload="none" />
     </section>
   )
 }

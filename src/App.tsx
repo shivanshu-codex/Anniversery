@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Landing from './components/Landing'
 import OurStory from './components/OurStory'
@@ -19,9 +19,43 @@ const sectionVariants = {
 
 export default function App() {
   const [stage, setStage] = useState<Stage>('landing')
+  const [playing, setPlaying] = useState(false)
+  const [audioReady, setAudioReady] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
   const mainRef = useRef<HTMLDivElement>(null)
 
-  const AUDIO_SRC = undefined // set to '/song.mp3' once you add your song file to public/
+  // Try to start music on first user interaction anywhere on page
+  const tryPlay = useCallback(() => {
+    const audio = audioRef.current
+    if (!audio || playing) return
+    audio.volume = 0.45
+    audio.play()
+      .then(() => setPlaying(true))
+      .catch(() => {})
+  }, [playing])
+
+  useEffect(() => {
+    document.addEventListener('click', tryPlay, { once: true })
+    document.addEventListener('touchstart', tryPlay, { once: true })
+    return () => {
+      document.removeEventListener('click', tryPlay)
+      document.removeEventListener('touchstart', tryPlay)
+    }
+  }, [tryPlay])
+
+  const toggleMusic = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const audio = audioRef.current
+    if (!audio) return
+    if (playing) {
+      audio.pause()
+      setPlaying(false)
+    } else {
+      audio.volume = 0.45
+      audio.play().then(() => setPlaying(true)).catch(() => {})
+    }
+  }
 
   const goTo = (next: Stage) => {
     setStage(next)
@@ -32,6 +66,82 @@ export default function App() {
 
   return (
     <div ref={mainRef} className="min-h-screen bg-cream">
+      {/* Global background audio — place your song at public/song.mp3 */}
+      <audio
+        ref={audioRef}
+        src="/song.mp3"
+        loop
+        preload="auto"
+        onCanPlay={() => setAudioReady(true)}
+        onError={() => setAudioReady(false)}
+      />
+
+      {/* Floating music player button */}
+      <motion.div
+        className="fixed bottom-6 left-4 z-50 flex flex-col items-center gap-1"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.2, type: 'spring' }}
+      >
+        {/* Tooltip */}
+        <AnimatePresence>
+          {showTooltip && (
+            <motion.div
+              className="absolute bottom-14 left-0 bg-white/90 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg border border-sunflower/20 w-44 pointer-events-none"
+              initial={{ opacity: 0, y: 6, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 6, scale: 0.9 }}
+            >
+              <p className="text-xs font-body font-bold text-gray-700 leading-tight">
+                {playing ? '🎵 Playing...' : '🎵 Tap to play music'}
+              </p>
+              <p className="text-xs font-body text-gray-400 mt-0.5 leading-tight">
+                Add song.mp3 to /public
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <motion.button
+          onClick={toggleMusic}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+          className="w-12 h-12 rounded-full flex items-center justify-center shadow-xl border-2 border-white relative overflow-hidden"
+          style={{
+            background: playing
+              ? 'linear-gradient(135deg, #FFC93C, #FF8C42)'
+              : 'rgba(255,255,255,0.9)',
+          }}
+          whileHover={{ scale: 1.15 }}
+          whileTap={{ scale: 0.9 }}
+          animate={playing ? { boxShadow: ['0 0 0px rgba(255,201,60,0)', '0 0 20px rgba(255,201,60,0.7)', '0 0 0px rgba(255,201,60,0)'] } : {}}
+          transition={playing ? { duration: 2, repeat: Infinity } : {}}
+        >
+          {/* Spinning rings when playing */}
+          {playing && (
+            <>
+              <motion.div
+                className="absolute inset-0 rounded-full border-2 border-sunflower/40"
+                animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full border-2 border-warmOrange/30"
+                animate={{ scale: [1, 1.9], opacity: [0.4, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, delay: 0.4 }}
+              />
+            </>
+          )}
+          <motion.span
+            className="text-xl relative z-10"
+            animate={playing ? { rotate: [0, 360] } : {}}
+            transition={playing ? { duration: 3, repeat: Infinity, ease: 'linear' } : {}}
+          >
+            {playing ? '🎵' : '🎶'}
+          </motion.span>
+        </motion.button>
+      </motion.div>
+
       {/* Navigation dots */}
       {stage !== 'landing' && (
         <motion.div
