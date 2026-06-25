@@ -21,8 +21,9 @@ const STAGE_SONGS: Partial<Record<Stage, string>> = {
   closing: '/songs/hawayein.mp3',
 }
 
-const VOLUME   = 0.5
-const FADE_MS  = 2000 // crossfade duration
+const VOLUME      = 0.5
+const FADE_OUT_MS = 1200  // old song fades to silence
+const FADE_IN_MS  = 1000  // new song fades in after silence
 
 const sectionVariants = {
   initial: { opacity: 0, y: 50, scale: 0.97 },
@@ -45,38 +46,53 @@ export default function App() {
   const active = () => (which.current === 1 ? a1 : a2).current
   const idle   = () => (which.current === 1 ? a2 : a1).current
 
-  // Crossfade from current track to a new one
+  // Sequential fade: old song fades OUT completely, then new song fades IN
   const crossfadeTo = useCallback((src: string) => {
     if (src === liveSrc.current) return
     liveSrc.current = src
 
     if (fadeTimer.current) clearInterval(fadeTimer.current)
 
-    const from = active()
-    const to   = idle()
+    const from      = active()
+    const startVol  = from.volume
+    const outSteps  = 24
+    const outDt     = FADE_OUT_MS / outSteps
+    const outDv     = startVol / outSteps
+    let   n         = 0
 
-    to.src    = src
-    to.volume = 0
-    to.loop   = true
-    to.play().catch(() => {})
-
-    const steps = 40
-    const dt    = FADE_MS / steps
-    const dv    = VOLUME  / steps
-    let   n     = 0
-
+    // Phase 1 — fade OUT old song
     fadeTimer.current = setInterval(() => {
       n++
-      from.volume = Math.max(0, from.volume - dv)
-      to.volume   = Math.min(VOLUME, to.volume + dv)
-      if (n >= steps) {
+      from.volume = Math.max(0, from.volume - outDv)
+
+      if (n >= outSteps) {
         clearInterval(fadeTimer.current!)
         from.pause()
-        from.src  = ''
+        from.src = ''
         which.current = which.current === 1 ? 2 : 1
-        setPlaying(true)
+
+        // Phase 2 — fade IN new song
+        const to = active()
+        to.src    = src
+        to.volume = 0
+        to.loop   = true
+        to.play().catch(() => {})
+
+        const inSteps = 20
+        const inDt    = FADE_IN_MS / inSteps
+        const inDv    = VOLUME / inSteps
+        let   m       = 0
+
+        fadeTimer.current = setInterval(() => {
+          m++
+          to.volume = Math.min(VOLUME, to.volume + inDv)
+          if (m >= inSteps) {
+            clearInterval(fadeTimer.current!)
+            setPlaying(true)
+          }
+        }, inDt)
       }
-    }, dt)
+    }, outDt)
   }, [])
 
   // Auto-start music immediately on mount; fall back to first ANY interaction if browser blocks
