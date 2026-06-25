@@ -111,7 +111,7 @@ I love you. Always.
       src: '/photos/photo5.jpg',
       caption: 'On top of the world 🏔️',
       message: 'With you, even the highest peak feels like home. Us against the world, and I wouldn\'t have it any other way. ✨',
-      song: null,
+      song: '/songs/photos/photo5.mp3',
     },
     {
       src: '/photos/photo6.jpg',
