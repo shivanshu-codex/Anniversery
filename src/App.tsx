@@ -11,81 +11,126 @@ type Stage = 'landing' | 'story' | 'gallery' | 'quiz' | 'reveal' | 'closing'
 
 const STAGE_ORDER: Stage[] = ['landing', 'story', 'gallery', 'quiz', 'reveal', 'closing']
 
+// Songs per stage — quiz & reveal intentionally absent (previous song keeps playing)
+const STAGE_SONGS: Partial<Record<Stage, string>> = {
+  landing: '/songs/tum-tak.mp3',
+  story:   '/songs/raabta.mp3',
+  gallery: '/songs/sang-rahiyo.mp3',
+  closing: '/songs/hawayein.mp3',
+}
+
+const VOLUME   = 0.5
+const FADE_MS  = 2000 // crossfade duration
+
 const sectionVariants = {
   initial: { opacity: 0, y: 50, scale: 0.97 },
   animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, type: 'spring', stiffness: 100 } },
-  exit: { opacity: 0, y: -50, scale: 0.97, transition: { duration: 0.35 } },
+  exit:    { opacity: 0, y: -50, scale: 0.97, transition: { duration: 0.35 } },
 }
 
 export default function App() {
-  const [stage, setStage] = useState<Stage>('landing')
-  const [playing, setPlaying] = useState(false)
-  const [audioReady, setAudioReady] = useState(false)
-  const [showTooltip, setShowTooltip] = useState(false)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const mainRef = useRef<HTMLDivElement>(null)
+  const [stage, setStage]       = useState<Stage>('landing')
+  const [playing, setPlaying]   = useState(false)
+  const [showTip, setShowTip]   = useState(false)
 
-  // Try to start music on first user interaction anywhere on page
-  const tryPlay = useCallback(() => {
-    const audio = audioRef.current
-    if (!audio || playing) return
-    audio.volume = 0.45
-    audio.play()
-      .then(() => setPlaying(true))
-      .catch(() => {})
-  }, [playing])
+  // Two audio elements for seamless crossfade
+  const a1        = useRef(new Audio())
+  const a2        = useRef(new Audio())
+  const which     = useRef<1 | 2>(1)   // which audio is currently "active"
+  const liveSrc   = useRef('')
+  const fadeTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const active = () => (which.current === 1 ? a1 : a2).current
+  const idle   = () => (which.current === 1 ? a2 : a1).current
+
+  // Crossfade from current track to a new one
+  const crossfadeTo = useCallback((src: string) => {
+    if (src === liveSrc.current) return
+    liveSrc.current = src
+
+    if (fadeTimer.current) clearInterval(fadeTimer.current)
+
+    const from = active()
+    const to   = idle()
+
+    to.src    = src
+    to.volume = 0
+    to.loop   = true
+    to.play().catch(() => {})
+
+    const steps = 40
+    const dt    = FADE_MS / steps
+    const dv    = VOLUME  / steps
+    let   n     = 0
+
+    fadeTimer.current = setInterval(() => {
+      n++
+      from.volume = Math.max(0, from.volume - dv)
+      to.volume   = Math.min(VOLUME, to.volume + dv)
+      if (n >= steps) {
+        clearInterval(fadeTimer.current!)
+        from.pause()
+        from.src  = ''
+        which.current = which.current === 1 ? 2 : 1
+        setPlaying(true)
+      }
+    }, dt)
+  }, [])
+
+  // Start the first song on the very first user tap/click (browser autoplay policy)
+  const initPlay = useCallback(() => {
+    if (liveSrc.current) return
+    const src = STAGE_SONGS.landing!
+    liveSrc.current = src
+    const audio = active()
+    audio.src    = src
+    audio.volume = VOLUME
+    audio.loop   = true
+    audio.play().then(() => setPlaying(true)).catch(() => {})
+  }, [])
 
   useEffect(() => {
-    document.addEventListener('click', tryPlay, { once: true })
-    document.addEventListener('touchstart', tryPlay, { once: true })
+    const opts = { once: true } as const
+    document.addEventListener('click',      initPlay, opts)
+    document.addEventListener('touchstart', initPlay, { ...opts, passive: true })
     return () => {
-      document.removeEventListener('click', tryPlay)
-      document.removeEventListener('touchstart', tryPlay)
+      document.removeEventListener('click',      initPlay)
+      document.removeEventListener('touchstart', initPlay)
     }
-  }, [tryPlay])
+  }, [initPlay])
 
   const toggleMusic = (e: React.MouseEvent) => {
     e.stopPropagation()
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = active()
     if (playing) {
       audio.pause()
       setPlaying(false)
     } else {
-      audio.volume = 0.45
-      audio.play().then(() => setPlaying(true)).catch(() => {})
+      if (!liveSrc.current) initPlay()
+      else audio.play().then(() => setPlaying(true)).catch(() => {})
     }
   }
 
   const goTo = (next: Stage) => {
     setStage(next)
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 50)
+    const song = STAGE_SONGS[next]
+    if (song && playing) crossfadeTo(song)
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50)
   }
 
   return (
-    <div ref={mainRef} className="min-h-screen bg-cream">
-      {/* Global background audio — place your song at public/song.mp3 */}
-      <audio
-        ref={audioRef}
-        src="/song.mp3"
-        loop
-        preload="auto"
-        onCanPlay={() => setAudioReady(true)}
-        onError={() => setAudioReady(false)}
-      />
+    <div className="min-h-screen bg-cream">
 
-      {/* Floating music player button */}
+      {/* ── Floating music button ── */}
       <motion.div
-        className="fixed bottom-6 left-4 z-50 flex flex-col items-center gap-1"
+        className="fixed bottom-6 left-4 z-50"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1.2, type: 'spring' }}
       >
         {/* Tooltip */}
         <AnimatePresence>
-          {showTooltip && (
+          {showTip && (
             <motion.div
               className="absolute bottom-14 left-0 bg-white/90 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-lg border border-sunflower/20 w-44 pointer-events-none"
               initial={{ opacity: 0, y: 6, scale: 0.9 }}
@@ -93,10 +138,7 @@ export default function App() {
               exit={{ opacity: 0, y: 6, scale: 0.9 }}
             >
               <p className="text-xs font-body font-bold text-gray-700 leading-tight">
-                {playing ? '🎵 Playing...' : '🎵 Tap to play music'}
-              </p>
-              <p className="text-xs font-body text-gray-400 mt-0.5 leading-tight">
-                Add song.mp3 to /public
+                {playing ? '🎵 Now playing…' : '🎵 Tap to play music'}
               </p>
             </motion.div>
           )}
@@ -104,31 +146,33 @@ export default function App() {
 
         <motion.button
           onClick={toggleMusic}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
+          onMouseEnter={() => setShowTip(true)}
+          onMouseLeave={() => setShowTip(false)}
           className="w-12 h-12 rounded-full flex items-center justify-center shadow-xl border-2 border-white relative overflow-hidden"
           style={{
             background: playing
               ? 'linear-gradient(135deg, #FFC93C, #FF8C42)'
-              : 'rgba(255,255,255,0.9)',
+              : 'rgba(255,255,255,0.92)',
           }}
           whileHover={{ scale: 1.15 }}
           whileTap={{ scale: 0.9 }}
-          animate={playing ? { boxShadow: ['0 0 0px rgba(255,201,60,0)', '0 0 20px rgba(255,201,60,0.7)', '0 0 0px rgba(255,201,60,0)'] } : {}}
+          animate={playing
+            ? { boxShadow: ['0 0 0px rgba(255,201,60,0)', '0 0 22px rgba(255,201,60,0.7)', '0 0 0px rgba(255,201,60,0)'] }
+            : {}}
           transition={playing ? { duration: 2, repeat: Infinity } : {}}
         >
-          {/* Spinning rings when playing */}
+          {/* Ripple rings when playing */}
           {playing && (
             <>
               <motion.div
-                className="absolute inset-0 rounded-full border-2 border-sunflower/40"
-                animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
-                transition={{ duration: 1.4, repeat: Infinity }}
+                className="absolute inset-0 rounded-full border-2 border-sunflower/50"
+                animate={{ scale: [1, 1.7], opacity: [0.6, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
               />
               <motion.div
                 className="absolute inset-0 rounded-full border-2 border-warmOrange/30"
-                animate={{ scale: [1, 1.9], opacity: [0.4, 0] }}
-                transition={{ duration: 1.4, repeat: Infinity, delay: 0.4 }}
+                animate={{ scale: [1, 2.1], opacity: [0.4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
               />
             </>
           )}
@@ -142,7 +186,7 @@ export default function App() {
         </motion.button>
       </motion.div>
 
-      {/* Navigation dots */}
+      {/* ── Navigation dots ── */}
       {stage !== 'landing' && (
         <motion.div
           className="fixed top-4 right-4 z-50 flex flex-col gap-2"
@@ -151,16 +195,16 @@ export default function App() {
           transition={{ delay: 0.3 }}
         >
           {STAGE_ORDER.filter((s) => s !== 'landing').map((s) => {
-            const stageIdx = STAGE_ORDER.indexOf(s)
+            const stageIdx   = STAGE_ORDER.indexOf(s)
             const currentIdx = STAGE_ORDER.indexOf(stage)
-            const isActive = s === stage
-            const isDone = stageIdx < currentIdx
+            const isActive   = s === stage
+            const isDone     = stageIdx < currentIdx
             return (
               <motion.div
                 key={s}
                 className="rounded-full"
                 style={{
-                  width: isActive ? 10 : 7,
+                  width:  isActive ? 10 : 7,
                   height: isActive ? 10 : 7,
                   background: isActive ? '#FFC93C' : isDone ? '#FF8C42' : '#e5e7eb',
                   boxShadow: isActive ? '0 0 8px rgba(255,201,60,0.8)' : 'none',
@@ -173,6 +217,7 @@ export default function App() {
         </motion.div>
       )}
 
+      {/* ── Stages ── */}
       <AnimatePresence mode="wait">
         {stage === 'landing' && (
           <motion.div key="landing" {...sectionVariants}>
@@ -203,7 +248,7 @@ export default function App() {
 
         {stage === 'reveal' && (
           <motion.div key="reveal" {...sectionVariants}>
-            <Reveal audioSrc={AUDIO_SRC} onReplay={() => goTo('closing')} />
+            <Reveal audioSrc={undefined} onReplay={() => goTo('closing')} />
           </motion.div>
         )}
 
