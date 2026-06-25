@@ -9,7 +9,8 @@
       "WebFetch(domain:github.com)",
       "PowerShell(New-Item -ItemType Directory -Force \"c:\\\\Users\\\\workS\\\\OneDrive\\\\Desktop\\\\Annniversery\\\\public\\\\photos\")",
       "PowerShell(cd \"c:\\\\Users\\\\workS\\\\OneDrive\\\\Desktop\\\\Annniversery\"; $git = \"C:\\\\Users\\\\workS\\\\AppData\\\\Local\\\\GitHubDesktop\\\\app-3.4.20\\\\resources\\\\app\\\\git\\\\cmd\\\\git.exe\"; & $git add -A; & $git status)",
-      "PowerShell(cd \"c:\\\\Users\\\\workS\\\\OneDrive\\\\Desktop\\\\Annniversery\"; $git = \"C:\\\\Users\\\\workS\\\\AppData\\\\Local\\\\GitHubDesktop\\\\app-3.5.12\\\\resources\\\\app\\\\git\\\\cmd\\\\git.exe\"; & $git add -A; & $git status)"
+      "PowerShell(cd \"c:\\\\Users\\\\workS\\\\OneDrive\\\\Desktop\\\\Annniversery\"; $git = \"C:\\\\Users\\\\workS\\\\AppData\\\\Local\\\\GitHubDesktop\\\\app-3.5.12\\\\resources\\\\app\\\\git\\\\cmd\\\\git.exe\"; & $git add -A; & $git status)",
+      "PowerShell(cd \"c:\\\\Users\\\\workS\\\\OneDrive\\\\Desktop\\\\Annniversery\"; $git = \"C:\\\\Users\\\\workS\\\\AppData\\\\Local\\\\GitHubDesktop\\\\app-3.5.12\\\\resources\\\\app\\\\git\\\\cmd\\\\git.exe\"; & $git commit -m \"Add 2 quiz questions, photo message cards, and photo placeholders for 3 real images\"; & $git push origin main)"
     ]
   }
 }

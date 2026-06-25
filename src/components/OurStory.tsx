@@ -2,42 +2,50 @@ import { motion } from 'framer-motion'
 
 const timelineEvents = [
   {
-    emoji: '👋',
+    emoji: '💫',
     year: '2019',
-    title: 'Pehli Mulaqat',
-    desc: 'Two souls crossed paths — little did they know this was the beginning of something forever.',
+    title: 'A Girl',
+    desc: 'This is the most initial phase — when I found you and interacted with you for the very first time. Something about you stayed with me.',
     color: 'from-sunflower/30 to-yellow-100',
     accent: '#FFC93C',
   },
   {
-    emoji: '🤝',
-    year: '2019–2024',
-    title: 'Paanch Saal Ki Dosti',
-    desc: 'Lucknow ki galiyan, idli dates, late night baatein — a bond only rare hearts share.',
-    color: 'from-warmOrange/20 to-orange-50',
-    accent: '#FF8C42',
-  },
-  {
-    emoji: '🌹',
-    year: '2024',
-    title: 'Tumne Pucha',
-    desc: 'She asked. He chose her — without a second thought. His heart already knew all along.',
-    color: 'from-coral/20 to-pink-50',
-    accent: '#FF6B6B',
-  },
-  {
-    emoji: '💛',
-    year: '27 June 2025',
-    title: 'Ek Naya Safar',
-    desc: 'Dosti se pyaar — the most beautiful transition, the most natural "yes" he ever said.',
+    emoji: '💔',
+    year: '2020 – 2021',
+    title: 'The Lost Phase',
+    desc: 'This is the time when I missed you the most. But at the same time, I love and respect your decision the most. Distance taught me how much you meant.',
     color: 'from-sky/20 to-blue-50',
     accent: '#74C0FC',
   },
   {
-    emoji: '🎊',
-    year: '27 June 2026',
-    title: 'Ek Poora Saal',
-    desc: '365 days, countless forehead kisses, endless "Mumma" calls — and forever still ahead.',
+    emoji: '🌱',
+    year: '2021 – 2022',
+    title: 'A Second Chance',
+    desc: 'Our friendship got a life once again. We had occasional talks, but they felt so good. Thank you for reviving that friendship — it meant the world.',
+    color: 'from-warmOrange/20 to-orange-50',
+    accent: '#FF8C42',
+  },
+  {
+    emoji: '🤝',
+    year: '2022 – 2024',
+    title: 'Best Friends',
+    desc: 'Our friendship came back on track and we started understanding each other more and more. From friend to best friend — the happiest, most exciting journey.',
+    color: 'from-coral/20 to-pink-50',
+    accent: '#FF6B6B',
+  },
+  {
+    emoji: '🌹',
+    year: '2024 – 2025',
+    title: 'Something More',
+    desc: 'As our bond grew deeper, you showed me the opportunity to make it more meaningful and special. I respect every moment you gave me, and made yourself available for me.',
+    color: 'from-pink-200/30 to-rose-50',
+    accent: '#e879a0',
+  },
+  {
+    emoji: '💛',
+    year: '2025 – 2026',
+    title: 'Our Beautiful Year',
+    desc: 'One of the most beautiful years of my life. So many wonderful memories I am grateful for. Being together not only gave us a relationship — it made us grow. I hope I made you a better version of yourself too.',
     color: 'from-sunflower/30 to-warmOrange/10',
     accent: '#FFC93C',
   },
@@ -172,7 +180,7 @@ export default function OurStory() {
             💛
           </motion.div>
           <p className="font-body text-gray-500 text-sm italic">
-            "Every love story is beautiful, but ours is my favourite."
+            "Thank you so much for the journey 🫶"
           </p>
         </motion.div>
       </motion.div>
