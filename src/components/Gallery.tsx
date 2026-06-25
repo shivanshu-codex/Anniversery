@@ -53,9 +53,11 @@ export default function Gallery({ photos = CONTENT.photos, onDone }: GalleryProp
   const [burst, setBurst] = useState<BurstParticle[]>([])
   const [showMsg, setShowMsg] = useState(false)
   const [celebrating, setCelebrating] = useState(false)
+  const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({})
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const photo = photos[current]
+  const imgFailed = imgErrors[current]
   const isLast = current === photos.length - 1
 
   const celebrate = () => {
@@ -217,11 +219,12 @@ export default function Gallery({ photos = CONTENT.photos, onDone }: GalleryProp
             transition={{ duration: 0.45, type: 'spring', stiffness: 200, damping: 20 }}
             className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white"
           >
-            {photo.src ? (
+            {photo.src && !imgFailed ? (
               <img
                 src={photo.src}
                 alt={photo.caption}
                 className="w-full aspect-[3/4] object-cover"
+                onError={() => setImgErrors(prev => ({ ...prev, [current]: true }))}
               />
             ) : (
               <div
