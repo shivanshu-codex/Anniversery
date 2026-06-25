@@ -110,6 +110,12 @@ export default function App() {
     }
   }
 
+  // Called by Gallery when the photo changes — crossfade to photo's song or back to gallery ambient
+  const handleGallerySong = useCallback((song: string | null) => {
+    const target = song ?? '/songs/sang-rahiyo.mp3'
+    if (!active().paused) crossfadeTo(target)
+  }, [crossfadeTo])
+
   const goTo = (next: Stage) => {
     setStage(next)
     const song = STAGE_SONGS[next]
@@ -235,7 +241,7 @@ export default function App() {
 
         {stage === 'gallery' && (
           <motion.div key="gallery" {...sectionVariants}>
-            <Gallery onDone={() => goTo('quiz')} />
+            <Gallery onDone={() => goTo('quiz')} onSongChange={handleGallerySong} />
           </motion.div>
         )}
 

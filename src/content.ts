@@ -87,31 +87,37 @@ I love you. Always.
       src: '/photos/photo1.jpg',
       caption: 'Us in our anime era 🌿',
       message: 'Look at us — even as cartoons, we\'re the cutest. 💛 This is how I see us, always together, always smiling.',
+      song: null,
     },
     {
       src: '/photos/photo2.jpg',
       caption: 'Cozy & forever 🏡',
       message: 'My favorite place in the world? Right next to you, like this. You make even a lazy day feel like everything. 🥰',
+      song: '/songs/photos/photo2.mp3',
     },
     {
       src: '/photos/photo3.jpg',
       caption: 'That look. Always this look. 💕',
       message: 'The way you look at me in this — I want to freeze this moment forever. You are my favorite view. 🌅',
+      song: '/songs/photos/photo3.mp3',
     },
     {
       src: '/photos/photo4.jpg',
       caption: 'My sunflower girl 🌻',
       message: 'This smile — this is the one that got me. You and a sunflower, and I\'m already lost. 💛',
+      song: '/songs/photos/photo4.mp3',
     },
     {
       src: '/photos/photo5.jpg',
       caption: 'On top of the world 🏔️',
       message: 'With you, even the highest peak feels like home. Us against the world, and I wouldn\'t have it any other way. ✨',
+      song: null,
     },
     {
       src: '/photos/photo6.jpg',
       caption: 'Forehead kiss 💫',
       message: 'This is my favorite thing in the world — you, with your eyes closed, smiling. I\'d kiss your forehead a thousand times more. 🌹',
+      song: '/songs/photos/photo6.mp3',
     },
   ],
 }

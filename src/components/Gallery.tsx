@@ -43,11 +43,12 @@ interface BurstParticle {
 }
 
 interface GalleryProps {
-  photos?: Array<{ src: string | null; caption: string; message?: string }>
+  photos?: Array<{ src: string | null; caption: string; message?: string; song?: string | null }>
   onDone: () => void
+  onSongChange?: (song: string | null) => void
 }
 
-export default function Gallery({ photos = CONTENT.photos, onDone }: GalleryProps) {
+export default function Gallery({ photos = CONTENT.photos, onDone, onSongChange }: GalleryProps) {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(1)
   const [burst, setBurst] = useState<BurstParticle[]>([])
@@ -93,18 +94,27 @@ export default function Gallery({ photos = CONTENT.photos, onDone }: GalleryProp
     celebrate()
     setTimeout(() => {
       setDirection(1)
-      setCurrent((c) => Math.min(c + 1, photos.length - 1))
+      setCurrent((c) => {
+        const next = Math.min(c + 1, photos.length - 1)
+        onSongChange?.(photos[next]?.song ?? null)
+        return next
+      })
     }, 400)
   }
 
   const goPrev = () => {
     setDirection(-1)
-    setCurrent((c) => Math.max(c - 1, 0))
+    setCurrent((c) => {
+      const prev = Math.max(c - 1, 0)
+      onSongChange?.(photos[prev]?.song ?? null)
+      return prev
+    })
   }
 
-  // Auto-celebrate on mount for first photo
+  // Auto-celebrate on mount and trigger song for first photo
   useEffect(() => {
     const t = setTimeout(() => celebrate(), 600)
+    onSongChange?.(photos[0]?.song ?? null)
     return () => clearTimeout(t)
   }, [])
 
