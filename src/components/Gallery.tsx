@@ -43,7 +43,7 @@ interface BurstParticle {
 }
 
 interface GalleryProps {
-  photos?: Array<{ src: string | null; caption: string }>
+  photos?: Array<{ src: string | null; caption: string; message?: string }>
   onDone: () => void
 }
 
@@ -262,6 +262,36 @@ export default function Gallery({ photos = CONTENT.photos, onDone }: GalleryProp
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Message card */}
+      <AnimatePresence mode="wait">
+        {photo.message && (
+          <motion.div
+            key={current}
+            className="w-full max-w-xs z-10 mb-5"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.4, delay: 0.25 }}
+          >
+            <div
+              className="rounded-2xl px-5 py-4 shadow-md border border-sunflower/20 relative"
+              style={{ background: 'rgba(255,255,255,0.82)', backdropFilter: 'blur(10px)' }}
+            >
+              <motion.span
+                className="absolute -top-3 left-4 text-xl"
+                animate={{ rotate: [0, 12, -12, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                💌
+              </motion.span>
+              <p className="font-body text-sm text-gray-600 leading-relaxed text-center pt-1">
+                {photo.message}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Progress dots */}
       <div className="flex gap-2 mb-6 z-10">

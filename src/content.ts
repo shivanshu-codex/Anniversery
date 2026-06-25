@@ -33,6 +33,20 @@ export const CONTENT = {
       correct: 'Your smile',
       hint: 'Hint: it lights up every room you walk into ☀️',
     },
+    {
+      id: 5,
+      question: 'What was Motak wearing the first time we met? 👕',
+      options: ['Jacket', 'Hoodie', 'T-shirt', 'Shirt'],
+      correct: 'Hoodie',
+      hint: 'Hint: something warm and cozy — just like him 🤎',
+    },
+    {
+      id: 6,
+      question: 'Where was our first date? 🌃',
+      options: ['Café', 'Park', 'Sidewalk', 'Mall'],
+      correct: 'Sidewalk',
+      hint: 'Hint: the most underrated, romantic spot — just walking together ✨',
+    },
   ],
 
   poem: `Paanch saal pehle, tum sirf ek dost thi,
@@ -69,15 +83,27 @@ I love you. Always.
 — Motak 🌻`,
 
   photos: [
-    { src: null, caption: 'The beginning of our forever 🌻' },
-    { src: null, caption: 'Us in Lucknow, always smiling 😊' },
-    { src: null, caption: 'Your smile is my favourite thing 💛' },
-    { src: null, caption: 'Every moment with you is a blessing ✨' },
-    { src: null, caption: 'Idli date with my favourite person 🍽️' },
-    { src: null, caption: 'Paanch saal ki dosti, ek saal ka pyaar ❤️' },
-    { src: null, caption: 'You make every day brighter 🌟' },
-    { src: null, caption: 'My Angel, always and forever 👼' },
-    { src: null, caption: 'Sunflower vibes only 🌻' },
-    { src: null, caption: 'Here\'s to many more years 🥂' },
+    {
+      src: '/photos/photo1.jpg',
+      caption: 'Us in our anime era 🌿',
+      message: 'Look at us — even as cartoons, we\'re the cutest. 💛 This is how I see us, always together, always smiling.',
+    },
+    {
+      src: '/photos/photo2.jpg',
+      caption: 'Cozy & forever 🏡',
+      message: 'My favorite place in the world? Right next to you, like this. You make even a lazy day feel like everything. 🥰',
+    },
+    {
+      src: '/photos/photo3.jpg',
+      caption: 'That look. Always this look. 💕',
+      message: 'The way you look at me in this — I want to freeze this moment forever. You are my favorite view. 🌅',
+    },
+    { src: null, caption: 'Memory 4 🌻', message: 'Every moment with you is one I want to hold onto forever. ✨' },
+    { src: null, caption: 'Memory 5 💛', message: 'Idli date with my favourite person 🍽️ — the best kind of date.' },
+    { src: null, caption: 'Memory 6 ❤️', message: 'Paanch saal ki dosti, ek saal ka pyaar — and a lifetime to go. 💞' },
+    { src: null, caption: 'Memory 7 🌟', message: 'You make every single day brighter just by being in it. 🌻' },
+    { src: null, caption: 'Memory 8 👼', message: 'My Angel, always and forever — no matter what, always you. 💖' },
+    { src: null, caption: 'Memory 9 🌻', message: 'Sunflower vibes only — warm, bright, and always facing you. 🌻' },
+    { src: null, caption: 'Memory 10 🥂', message: 'Here\'s to many more years, many more moments, many more us. 🎊' },
   ],
 }
