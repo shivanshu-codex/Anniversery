@@ -94,7 +94,7 @@ I love you. Always.
       message: 'My favorite place in the world? Right next to you, like this. You make even a lazy day feel like everything. 🥰',
     },
     {
-      src: '/photos/photo3.png',
+      src: '/photos/photo3.jpg',
       caption: 'That look. Always this look. 💕',
       message: 'The way you look at me in this — I want to freeze this moment forever. You are my favorite view. 🌅',
     },

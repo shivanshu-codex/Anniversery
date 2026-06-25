@@ -96,7 +96,7 @@ export default function Quiz({ onComplete }: QuizProps) {
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2.5, repeat: Infinity }}
           >
-            Answer all 4 to unlock the big surprise! 🎁
+            Answer the questions to unlock the big surprise! 🎁
           </motion.p>
         </div>
 
