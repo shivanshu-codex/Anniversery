@@ -77,27 +77,27 @@ export default function App() {
     }, dt)
   }, [])
 
-  // Start the first song on the very first user tap/click (browser autoplay policy)
-  const initPlay = useCallback(() => {
-    if (liveSrc.current) return
-    const src = STAGE_SONGS.landing!
+  // Auto-start music immediately on mount; fall back to first ANY interaction if browser blocks
+  useEffect(() => {
+    const audio = a1.current
+    const src   = STAGE_SONGS.landing!
     liveSrc.current = src
-    const audio = active()
     audio.src    = src
     audio.volume = VOLUME
     audio.loop   = true
-    audio.play().then(() => setPlaying(true)).catch(() => {})
-  }, [])
 
-  useEffect(() => {
-    const opts = { once: true } as const
-    document.addEventListener('click',      initPlay, opts)
-    document.addEventListener('touchstart', initPlay, { ...opts, passive: true })
-    return () => {
-      document.removeEventListener('click',      initPlay)
-      document.removeEventListener('touchstart', initPlay)
-    }
-  }, [initPlay])
+    audio.play()
+      .then(() => setPlaying(true))
+      .catch(() => {
+        // Browser blocked silent autoplay — start on first ANY user gesture
+        const events = ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'] as const
+        const handler = () => {
+          audio.play().then(() => setPlaying(true)).catch(() => {})
+          events.forEach(ev => document.removeEventListener(ev, handler))
+        }
+        events.forEach(ev => document.addEventListener(ev, handler, { passive: true }))
+      })
+  }, [])
 
   const toggleMusic = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -106,8 +106,7 @@ export default function App() {
       audio.pause()
       setPlaying(false)
     } else {
-      if (!liveSrc.current) initPlay()
-      else audio.play().then(() => setPlaying(true)).catch(() => {})
+      audio.play().then(() => setPlaying(true)).catch(() => {})
     }
   }
 
