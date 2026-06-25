@@ -16,6 +16,7 @@ const STAGE_SONGS: Partial<Record<Stage, string>> = {
   landing: '/songs/tum-tak.mp3',
   story:   '/songs/raabta.mp3',
   gallery: '/songs/sang-rahiyo.mp3',
+  quiz:    '/songs/tamasha.mp3',
   closing: '/songs/hawayein.mp3',
 }
 
