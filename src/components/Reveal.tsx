@@ -139,9 +139,9 @@ export default function Reveal({ audioSrc, onReplay }: RevealProps) {
       {/* ── Main content ── */}
       <div className="relative z-10 max-w-md w-full text-center">
 
-        {/* Twin SVG sunflowers */}
+        {/* Twin SVG sunflowers — identical to Landing page */}
         <motion.div
-          className="flex items-end justify-center gap-4 mb-5 select-none"
+          className="relative flex items-end justify-center gap-3 mb-6 select-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -149,61 +149,61 @@ export default function Reveal({ audioSrc, onReplay }: RevealProps) {
           {/* Left sunflower */}
           <motion.div
             className="relative"
-            initial={{ scale: 0, x: -70, rotate: -160 }}
+            initial={{ scale: 0, x: -80, rotate: -180 }}
             animate={{ scale: 1, x: 0, rotate: 0 }}
             transition={{ type: 'spring', stiffness: 90, damping: 12, delay: 0.15 }}
           >
             <motion.div
               className="absolute rounded-full pointer-events-none"
-              style={{ inset: '-16px', background: 'radial-gradient(circle, rgba(255,201,60,0.5) 0%, transparent 70%)' }}
-              animate={{ scale: [1, 1.55, 1], opacity: [0.8, 0.15, 0.8] }}
+              style={{ inset: '-18px', background: 'radial-gradient(circle, rgba(255,201,60,0.55) 0%, transparent 70%)' }}
+              animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0.2, 0.8] }}
               transition={{ duration: 2.4, repeat: Infinity }}
             />
             <motion.div
               className="absolute rounded-full border-2 border-dashed border-sunflower/30 pointer-events-none"
-              style={{ inset: '-8px' }}
+              style={{ inset: '-10px' }}
               animate={{ rotate: 360 }}
-              transition={{ duration: 13, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
             />
             <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}>
-              <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
-                <Sunflower size={112} id="rv-sf-left" />
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}>
+                <Sunflower size={128} id="rv-sf-left" />
               </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Centre heart */}
+          {/* Centre sparkle */}
           <motion.div
-            className="text-3xl mb-2"
-            initial={{ scale: 0 }}
-            animate={{ scale: [1, 1.4, 1], rotate: [0, 15, -15, 0] }}
-            transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+            className="text-2xl mb-2"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: [1, 1.4, 1], opacity: [0.8, 1, 0.8], rotate: [0, 20, -20, 0] }}
+            transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
           >
-            💖
+            💕
           </motion.div>
 
           {/* Right sunflower */}
           <motion.div
             className="relative"
-            initial={{ scale: 0, x: 70, rotate: 160 }}
+            initial={{ scale: 0, x: 80, rotate: 180 }}
             animate={{ scale: 1, x: 0, rotate: 0 }}
             transition={{ type: 'spring', stiffness: 90, damping: 12, delay: 0.25 }}
           >
             <motion.div
               className="absolute rounded-full pointer-events-none"
-              style={{ inset: '-16px', background: 'radial-gradient(circle, rgba(255,140,66,0.45) 0%, transparent 70%)' }}
-              animate={{ scale: [1, 1.55, 1], opacity: [0.8, 0.15, 0.8] }}
+              style={{ inset: '-18px', background: 'radial-gradient(circle, rgba(255,140,66,0.5) 0%, transparent 70%)' }}
+              animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0.2, 0.8] }}
               transition={{ duration: 3.0, repeat: Infinity, delay: 0.9 }}
             />
             <motion.div
               className="absolute rounded-full border-2 border-dashed border-warmOrange/30 pointer-events-none"
-              style={{ inset: '-8px' }}
+              style={{ inset: '-10px' }}
               animate={{ rotate: -360 }}
-              transition={{ duration: 17, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
             />
             <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}>
-              <motion.div animate={{ rotate: -360 }} transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}>
-                <Sunflower size={112} id="rv-sf-right" />
+              <motion.div animate={{ rotate: -360 }} transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}>
+                <Sunflower size={128} id="rv-sf-right" />
               </motion.div>
             </motion.div>
           </motion.div>
