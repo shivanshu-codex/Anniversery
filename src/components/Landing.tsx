@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Sunflower } from './Sunflower'
 
 interface LandingProps {
   onBegin: () => void
@@ -102,14 +103,12 @@ export default function Landing({ onBegin }: LandingProps) {
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
           >
-            {/* Rotating sunflower */}
-            <motion.span
-              className="text-7xl block"
+            <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
             >
-              🌻
-            </motion.span>
+              <Sunflower size={128} id="sf-left" />
+            </motion.div>
           </motion.div>
         </motion.div>
 
@@ -152,14 +151,12 @@ export default function Landing({ onBegin }: LandingProps) {
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
           >
-            {/* Counter-rotating sunflower */}
-            <motion.span
-              className="text-7xl block"
+            <motion.div
               animate={{ rotate: -360 }}
               transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
             >
-              🌻
-            </motion.span>
+              <Sunflower size={128} id="sf-right" />
+            </motion.div>
           </motion.div>
         </motion.div>
       </motion.div>
@@ -239,10 +236,13 @@ export default function Landing({ onBegin }: LandingProps) {
         {['🌻', '💕', '🌸', '💛', '🌹', '✨', '🌼', '💫', '🌻'].map((e, i) => (
           <motion.span
             key={i}
+            className="inline-flex items-center justify-center"
             animate={{ y: [0, -10, 0], scale: [1, 1.15, 1] }}
             transition={{ duration: 2 + i * 0.15, repeat: Infinity, delay: i * 0.18, ease: 'easeInOut' }}
           >
-            {e}
+            {e === '🌻'
+              ? <Sunflower size={30} id={`bot-sf-${i}`} />
+              : e}
           </motion.span>
         ))}
       </motion.div>
