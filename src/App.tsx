@@ -36,63 +36,61 @@ export default function App() {
   const [playing, setPlaying]   = useState(false)
   const [showTip, setShowTip]   = useState(false)
 
-  // Two audio elements for seamless crossfade
-  const a1        = useRef(new Audio())
-  const a2        = useRef(new Audio())
-  const which     = useRef<1 | 2>(1)   // which audio is currently "active"
-  const liveSrc   = useRef('')
-  const fadeTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+  // Two audio elements for simultaneous crossfade
+  const a1           = useRef(new Audio())
+  const a2           = useRef(new Audio())
+  const which        = useRef<1 | 2>(1)   // which audio is currently "active"
+  const liveSrc      = useRef('')
+  const fadeOutTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+  const fadeInTimer  = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const active = () => (which.current === 1 ? a1 : a2).current
-  const idle   = () => (which.current === 1 ? a2 : a1).current
 
-  // Sequential fade: old song fades OUT completely, then new song fades IN
+  // True crossfade: old fades OUT while new fades IN simultaneously — no gap
   const crossfadeTo = useCallback((src: string) => {
     if (src === liveSrc.current) return
     liveSrc.current = src
 
-    if (fadeTimer.current) clearInterval(fadeTimer.current)
+    if (fadeOutTimer.current) clearInterval(fadeOutTimer.current)
+    if (fadeInTimer.current)  clearInterval(fadeInTimer.current)
 
-    const from      = active()
-    const startVol  = from.volume
-    const outSteps  = 24
-    const outDt     = FADE_OUT_MS / outSteps
-    const outDv     = startVol / outSteps
-    let   n         = 0
+    const from     = active()
+    const startVol = from.volume
 
-    // Phase 1 — fade OUT old song
-    fadeTimer.current = setInterval(() => {
-      n++
+    // Switch active element and start the new song immediately at volume 0
+    which.current = which.current === 1 ? 2 : 1
+    const to  = active()
+    to.src    = src
+    to.volume = 0
+    to.loop   = true
+    to.play().catch(() => {})
+
+    // Fade OUT old — runs independently
+    const outSteps = 24
+    const outDv    = startVol / outSteps
+    let outN = 0
+    fadeOutTimer.current = setInterval(() => {
+      outN++
       from.volume = Math.max(0, from.volume - outDv)
-
-      if (n >= outSteps) {
-        clearInterval(fadeTimer.current!)
+      if (outN >= outSteps) {
+        clearInterval(fadeOutTimer.current!)
         from.pause()
         from.src = ''
-        which.current = which.current === 1 ? 2 : 1
-
-        // Phase 2 — fade IN new song
-        const to = active()
-        to.src    = src
-        to.volume = 0
-        to.loop   = true
-        to.play().catch(() => {})
-
-        const inSteps = 20
-        const inDt    = FADE_IN_MS / inSteps
-        const inDv    = VOLUME / inSteps
-        let   m       = 0
-
-        fadeTimer.current = setInterval(() => {
-          m++
-          to.volume = Math.min(VOLUME, to.volume + inDv)
-          if (m >= inSteps) {
-            clearInterval(fadeTimer.current!)
-            setPlaying(true)
-          }
-        }, inDt)
       }
-    }, outDt)
+    }, FADE_OUT_MS / outSteps)
+
+    // Fade IN new — runs simultaneously
+    const inSteps = 20
+    const inDv    = VOLUME / inSteps
+    let inM = 0
+    fadeInTimer.current = setInterval(() => {
+      inM++
+      to.volume = Math.min(VOLUME, to.volume + inDv)
+      if (inM >= inSteps) {
+        clearInterval(fadeInTimer.current!)
+        setPlaying(true)
+      }
+    }, FADE_IN_MS / inSteps)
   }, [])
 
   // Auto-start music immediately on mount; fall back to first ANY interaction if browser blocks
