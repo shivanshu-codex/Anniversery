@@ -18,7 +18,7 @@ const STAGE_SONGS: Partial<Record<Stage, string>> = {
   gallery: '/songs/sang-rahiyo.mp3',
   quiz:    '/songs/tamasha.mp3',
   reveal:  '/songs/tu-hai.mp3',
-  closing: '/songs/hawayein.mp3',
+  closing: '/songs/last-music.mp3',
 }
 
 const VOLUME      = 0.5
