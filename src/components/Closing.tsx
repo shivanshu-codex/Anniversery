@@ -232,6 +232,17 @@ export default function Closing({ onReplay }: ClosingProps) {
           And You also exist even beyond that — look, that one ☀️ sunflower also fades and appears over time. It means we come and go, but that infinite ♾️ us will exist beyond time and existence.
         </motion.p>
 
+        {/* Cosmos line */}
+        <motion.p
+          className="font-body font-bold text-base leading-relaxed mb-6"
+          style={gt('linear-gradient(90deg, #FF8C00, #FF4081, #9C27B0, #3B82F6)')}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.25 }}
+        >
+          "The entire cosmos is thriving in you Mumma"
+        </motion.p>
+
         {/* With Love */}
         <motion.p
           className="font-display text-3xl mb-8"
