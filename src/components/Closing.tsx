@@ -2,6 +2,88 @@ import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { useEffect } from 'react'
 
+function ClosingSunflower() {
+  const C = 150
+  const outerAngles = Array.from({ length: 20 }, (_, i) => i * 18)
+  const innerAngles = Array.from({ length: 20 }, (_, i) => i * 18 + 9)
+  const seeds: { x: number; y: number; r: number }[] = []
+  const rings = [
+    { count: 1,  radius: 0  },
+    { count: 7,  radius: 10 },
+    { count: 14, radius: 20 },
+    { count: 20, radius: 30 },
+    { count: 26, radius: 40 },
+    { count: 32, radius: 49 },
+  ]
+  rings.forEach(({ count, radius }) => {
+    Array.from({ length: count }).forEach((_, j) => {
+      const angle = (j / Math.max(count, 1)) * 2 * Math.PI - Math.PI / 2
+      seeds.push({
+        x: C + radius * Math.cos(angle),
+        y: C + radius * Math.sin(angle),
+        r: Math.max(2.2, 4.8 - radius * 0.055),
+      })
+    })
+  })
+  return (
+    <svg viewBox="0 0 300 300" width={220} height={220} xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', overflow: 'visible' }}>
+      <defs>
+        {/* Outer petals: vivid lemon → golden → deep orange → coral red */}
+        <linearGradient id="cs-op" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#FFF200" />
+          <stop offset="25%"  stopColor="#FFC800" />
+          <stop offset="58%"  stopColor="#FF7000" />
+          <stop offset="100%" stopColor="#D42B00" />
+        </linearGradient>
+        {/* Inner petals: golden → amber → vibrant orange */}
+        <linearGradient id="cs-ip" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="#FFE000" />
+          <stop offset="42%"  stopColor="#FF9B00" />
+          <stop offset="100%" stopColor="#FF4500" />
+        </linearGradient>
+        {/* Center disk */}
+        <radialGradient id="cs-disk" cx="38%" cy="32%" r="68%">
+          <stop offset="0%"   stopColor="#7B4F2E" />
+          <stop offset="45%"  stopColor="#3D1C00" />
+          <stop offset="100%" stopColor="#0D0400" />
+        </radialGradient>
+        {/* Center highlight */}
+        <radialGradient id="cs-cglow" cx="30%" cy="25%" r="52%">
+          <stop offset="0%"   stopColor="rgba(255,230,100,0.38)" />
+          <stop offset="100%" stopColor="rgba(255,230,100,0)" />
+        </radialGradient>
+        {/* Petal vein */}
+        <linearGradient id="cs-vein" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="rgba(255,255,180,0.6)" />
+          <stop offset="100%" stopColor="rgba(255,255,180,0)" />
+        </linearGradient>
+      </defs>
+      <g>
+        {outerAngles.map(angle => (
+          <ellipse key={angle} cx={C} cy={C - 74} rx={17} ry={56}
+            fill="url(#cs-op)" transform={`rotate(${angle} ${C} ${C})`} />
+        ))}
+      </g>
+      {outerAngles.map(angle => (
+        <ellipse key={`v${angle}`} cx={C} cy={C - 74} rx={4} ry={52}
+          fill="url(#cs-vein)" transform={`rotate(${angle} ${C} ${C})`} />
+      ))}
+      {innerAngles.map(angle => (
+        <ellipse key={angle} cx={C} cy={C - 58} rx={12} ry={38}
+          fill="url(#cs-ip)" transform={`rotate(${angle} ${C} ${C})`} />
+      ))}
+      <circle cx={C} cy={C} r={54} fill="url(#cs-disk)" />
+      {seeds.map((s, i) => (
+        <circle key={i} cx={s.x} cy={s.y} r={s.r} fill="#160804" opacity={0.82} />
+      ))}
+      {seeds.map((s, i) => (
+        <circle key={`h${i}`} cx={s.x - 0.8} cy={s.y - 0.8} r={s.r * 0.38} fill="rgba(255,180,80,0.28)" />
+      ))}
+      <circle cx={C} cy={C} r={54} fill="url(#cs-cglow)" />
+    </svg>
+  )
+}
+
 interface ClosingProps {
   onReplay: () => void
 }
@@ -49,22 +131,41 @@ export default function Closing({ onReplay }: ClosingProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, type: 'spring' }}
       >
-        {/* Big animated sunflower with glow */}
-        <div className="relative inline-block mb-6">
+        {/* Big SVG sunflower — bright on entry, fades out over 10s, invisible 10s, then reappears */}
+        <motion.div
+          className="relative inline-block mb-6 select-none"
+          animate={{ opacity: [1, 1, 0, 0, 1] }}
+          transition={{ duration: 24, times: [0, 0.08, 0.5, 0.92, 1], repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {/* Outer coral-pink glow ring */}
           <motion.div
-            className="absolute inset-0 rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(255,201,60,0.4) 0%, transparent 70%)' }}
-            animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0.1, 0.5] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
+            className="absolute rounded-full pointer-events-none"
+            style={{ inset: '-52px', background: 'radial-gradient(circle, rgba(255,140,40,0.38) 0%, rgba(255,80,0,0.18) 50%, transparent 72%)' }}
+            animate={{ scale: [1, 1.45, 1] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
           />
+          {/* Middle golden glow ring */}
           <motion.div
-            className="text-8xl relative z-10 select-none"
-            animate={{ rotate: [0, 12, -12, 0], scale: [1, 1.08, 1] }}
-            transition={{ duration: 4, repeat: Infinity }}
+            className="absolute rounded-full pointer-events-none"
+            style={{ inset: '-28px', background: 'radial-gradient(circle, rgba(255,220,0,0.55) 0%, rgba(255,160,0,0.28) 55%, transparent 75%)' }}
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+          />
+          {/* Rotating dashed ring */}
+          <motion.div
+            className="absolute rounded-full border-2 border-dashed pointer-events-none"
+            style={{ inset: '-14px', borderColor: 'rgba(255,200,0,0.4)' }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 16, repeat: Infinity, ease: 'linear' }}
+          />
+          {/* The sunflower itself — slow spin */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
           >
-            🌻
+            <ClosingSunflower />
           </motion.div>
-        </div>
+        </motion.div>
 
         <motion.h2
           className="font-display text-4xl mb-4"
