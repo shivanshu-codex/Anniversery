@@ -240,6 +240,36 @@ export default function Reveal({ audioSrc, onReplay }: RevealProps) {
               <p className="poem-text font-body text-sm md:text-base leading-loose" style={{ whiteSpace: 'pre-line', color: '#92400E' }}>
                 {CONTENT.poem}
               </p>
+
+              {/* Sign-off */}
+              <motion.p
+                className="font-display text-2xl mt-6 mb-2"
+                style={{ color: '#c97a00' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                Motak Loves Mumma
+              </motion.p>
+
+              {/* Popping heart */}
+              <motion.div
+                className="text-6xl mt-2 select-none"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{
+                  scale: [0, 1.4, 1, 1.15, 1],
+                  opacity: 1,
+                }}
+                transition={{ delay: 0.9, duration: 0.7, ease: 'easeOut' }}
+              >
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ display: 'inline-block' }}
+                >
+                  ❤️
+                </motion.span>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
