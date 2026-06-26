@@ -219,10 +219,10 @@ export default function Reveal({ audioSrc, onReplay }: RevealProps) {
               className="mb-6"
             >
               <h1 className="font-display shimmer-text text-4xl md:text-5xl leading-tight mb-2">
-                Happy 1st Anniversary
+                Happy 1st Anniversery Angel 💛
               </h1>
-              <p className="font-display text-3xl text-warmOrange">
-                Angel & Motak 💛
+              <p className="font-display text-2xl text-warmOrange">
+                Dear Girlfriend 🌹
               </p>
             </motion.div>
           )}
@@ -237,7 +237,7 @@ export default function Reveal({ audioSrc, onReplay }: RevealProps) {
               transition={{ duration: 0.8 }}
               className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-sunflower/30 mb-8"
             >
-              <p className="poem-text font-body text-gray-700 text-sm md:text-base leading-loose">
+              <p className="poem-text font-body text-gray-700 text-sm md:text-base leading-loose" style={{ whiteSpace: 'pre-line' }}>
                 {CONTENT.poem}
               </p>
             </motion.div>

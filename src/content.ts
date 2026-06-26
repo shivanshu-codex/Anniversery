@@ -49,21 +49,43 @@ export const CONTENT = {
     },
   ],
 
-  poem: `Paanch saal pehle, tum sirf ek dost thi,
-Aaj tum meri duniya ho, meri sunflower si zindagi.
-Lucknow ki galiyon mein jo waqt humne bitaya,
-Har idli ke bite mein bhi tumne pyaar hi khilaya.
+  poem: `Wish you a very very prosperous and happy first anniversary of our relationship mumma 🌻
 
-Tumne pucha, maine socha — but my heart already knew.
-Ek saal ho gaya, meri Angel, loving you.
-Tumhari smile mera sabse pyaara sukoon hai,
-Aur tumhara "Mumma" bolna... mera har junoon hai.
+Being here with you is one of the most amazing parts of my life. I never thought even in my dreams that you would be this close to me — but now it is reality. 💫
 
-Happy 1st Anniversary, meri jaan.
-Thank you for choosing "we" — for five years of friendship
-that quietly became forever.
-Forehead pe ek kiss, aur dil mein tumhare liye
-hamesha jagah rahe. 🌻`,
+It's been years since we talked for the first time — a journey that started from nothing and now we are here. 🌱
+
+It's a very memorable journey for me mumma, from being just a friend 😊 to a best friend 🤝 and now your boyfriend 💑.
+
+I never thought I would be capable of handling a relationship like this, but it's my fortune that I got you — someone who plays not just the role of a partner but also a best friend. 💛
+
+I think the biggest strength of our relationship is the friendship between us, and it will only grow stronger over time. 🌿
+
+I never thought any girl would describe me the way you do. I never thought anyone could give me the attention you give me every single day.
+
+Thank you so much Mumma. 🙏
+
+It's my bad at different aspects of our relationship — I may sometimes hurt you with my unfamiliar behaviours, for which I would always be grateful to have a girl like you who gives me room to improve. 💖
+
+It's a great journey till now mumma and we will make it better and better over time. ✨
+
+Honest saying — I love to bother you 🤨, make you angry 😡, make you feel safe, happy and growing near me, because all of this makes me feel more connected to you. I know it sometimes gets out of control — I will always be sorry for that, but will do the same in the upcoming years also 😅
+
+I love the most when we work together on our health, career, mindset, spirituality and so much more 💪 — and I wish we both become upgraded versions of ourselves as we spend more and more time together.
+
+In the upcoming years I will try my best to make this more and more better each day.
+I will understand you better, support you, and make you feel awesome each day. 🌟
+
+I genuinely feel so happy and proud when you take my words and work on yourself. Thank you so much for this mumma. 🥰
+
+Thank you for each and everything. Thank you for every thing in my life that gets better by having you.
+Thank you for loving me ❤️, thank you for the care 🤗, thank you for the unbreakable support 🌻.
+
+I don't know how many lives I have as life, but in this one you are from my most awesome moments. ✨
+
+Wish us a healthy, wealthy and prosperous future together. 🌻💛
+
+With lots of best wishes and good moments — wish you again a very very Happy Anniversary Mumma ❤️`,
 
   secretMessage: `My Angel,
 
