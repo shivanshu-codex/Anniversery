@@ -139,21 +139,21 @@ export default function Landing({ onBegin }: LandingProps) {
             animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0.2, 0.8] }}
             transition={{ duration: 3.0, repeat: Infinity, delay: 0.9 }}
           />
-          {/* Outer spin ring — counter */}
+          {/* Outer spin ring */}
           <motion.div
             className="absolute rounded-full border-2 border-dashed border-warmOrange/30 pointer-events-none"
             style={{ inset: '-10px' }}
-            animate={{ rotate: -360 }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
           />
           {/* Bounce wrapper — offset phase */}
           <motion.div
             animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
           >
             <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
             >
               <Sunflower size={128} id="sf-right" />
             </motion.div>

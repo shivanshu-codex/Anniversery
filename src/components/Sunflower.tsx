@@ -36,7 +36,7 @@ export function Sunflower({ size = 130, id = 'sf' }: SunflowerProps) {
       width={size}
       height={size}
       xmlns="http://www.w3.org/2000/svg"
-      style={{ display: 'block' }}
+      style={{ display: 'block', overflow: 'visible' }}
     >
       <defs>
         {/* Outer petal: bright yellow tip → warm orange base */}
@@ -65,11 +65,6 @@ export function Sunflower({ size = 130, id = 'sf' }: SunflowerProps) {
           <stop offset="100%" stopColor="rgba(255,220,140,0)"    />
         </radialGradient>
 
-        {/* Subtle petal shadow */}
-        <filter id={`${id}-sh`} x="-15%" y="-15%" width="130%" height="130%">
-          <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#00000030" />
-        </filter>
-
         {/* Petal vein — thin lighter stripe */}
         <linearGradient id={`${id}-vein`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%"   stopColor="rgba(255,255,255,0.45)" />
@@ -78,7 +73,7 @@ export function Sunflower({ size = 130, id = 'sf' }: SunflowerProps) {
       </defs>
 
       {/* ── Outer petals ── */}
-      <g filter={`url(#${id}-sh)`}>
+      <g>
         {outerAngles.map((angle) => (
           <ellipse
             key={angle}
