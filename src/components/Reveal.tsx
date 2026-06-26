@@ -237,7 +237,7 @@ export default function Reveal({ audioSrc, onReplay }: RevealProps) {
               transition={{ duration: 0.8 }}
               className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-sunflower/30 mb-8"
             >
-              <p className="poem-text font-body text-gray-700 text-sm md:text-base leading-loose" style={{ whiteSpace: 'pre-line' }}>
+              <p className="poem-text font-body text-sm md:text-base leading-loose" style={{ whiteSpace: 'pre-line', color: '#92400E' }}>
                 {CONTENT.poem}
               </p>
             </motion.div>
